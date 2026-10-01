@@ -10,11 +10,13 @@ def findings(folder: str) -> list[str]:
     failures = []
     for filename in files:
         for run in json.loads(filename.read_text(encoding="utf-8"))["runs"]:
-            rules = {rule["id"]: rule for rule in run["tool"]["driver"]["rules"]}
+            components = [run["tool"]["driver"], *run["tool"].get("extensions", [])]
+            rules = {rule["id"]: rule for component in components for rule in component.get("rules", [])}
             for result in run.get("results", []):
                 rule = rules.get(result["ruleId"], {})
                 severity = float(rule.get("properties", {}).get("security-severity", 0))
-                if severity >= 4 or result.get("level") == "error":
+                level = result.get("level", rule.get("defaultConfiguration", {}).get("level"))
+                if severity >= 4 or level == "error":
                     failures.append(result["ruleId"])
     return failures
 
