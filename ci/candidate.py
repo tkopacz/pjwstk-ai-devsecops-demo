@@ -18,8 +18,9 @@ if __name__ == "__main__":
     assert candidate["base"]["ref"] == "main"
     assert candidate["head"]["repo"]["full_name"] == os.environ["GITHUB_REPOSITORY"]
     checks = github(f"commits/{candidate['head']['sha']}/check-runs?per_page=100")["check_runs"]
-    for name in ("tests-eval", "codeql", "dependency-review"):
-        matches = [check for check in checks if check["name"] == name and check["app"]["slug"] == "github-actions"]
+    for name in ("tests-eval", "CodeQL", "dependency-review"):
+        publisher = 57789 if name == "CodeQL" else 15368
+        matches = [check for check in checks if check["name"] == name and check["app"]["id"] == publisher]
         assert matches, f"Missing {name}"
         latest = max(matches, key=lambda check: check["id"])
         assert latest["conclusion"] == "success", f"Failed {name}"
