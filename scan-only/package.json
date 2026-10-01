@@ -1,1 +1,8 @@
-{"name":"scan-only-synthetic-fixture","version":"1.0.0","private":true,"dependencies":{}}
+{
+  "name": "scan-only-synthetic-fixture",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "lodash": "4.17.15"
+  }
+}
