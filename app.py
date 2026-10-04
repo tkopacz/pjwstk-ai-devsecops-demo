@@ -3,3 +3,4 @@ def classify(text: str, source: str) -> dict[str, str]:
         return {"queue": "REVIEW", "decision": "BLOCK"}
     queue = "IT" if "password" in text.lower() else "GENERAL"
     return {"queue": queue, "decision": "PASS"}
+# ppp
